@@ -49,11 +49,14 @@
     "autoload-dev": {
         "psr-4": {
             "Laravel\\Horizon\\Tests\\": "tests/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.x-dev"
+            "dev-main": "1.x-dev"
         },
         "laravel": {
             "providers": [

@@ -79,7 +79,7 @@ if (! function_exists('mix')) {
      *
      * @param  string  $path
      * @param  string  $manifestDirectory
-     * @return HtmlString
+     * @return string
      *
      * @throws Exception
      */
