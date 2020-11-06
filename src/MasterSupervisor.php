@@ -82,11 +82,11 @@ class MasterSupervisor implements Pausable, Restartable, Terminable
     {
         static $token;
 
-        if (! $token) {
+        if (!$token) {
             $token = Str::random(4);
         }
 
-        return static::basename().'-'.$token;
+        return static::basename() . '-' . $token;
     }
 
     /**
@@ -97,14 +97,14 @@ class MasterSupervisor implements Pausable, Restartable, Terminable
     public static function basename()
     {
         return static::$nameResolver
-                        ? call_user_func(static::$nameResolver)
-                        : Str::slug(gethostname());
+            ? call_user_func(static::$nameResolver)
+            : Str::slug(gethostname());
     }
 
     /**
      * Use the given callback to resolve master supervisor names.
      *
-     * @param  \Closure  $callback
+     * @param \Closure $callback
      * @return void
      */
     public static function determineNameUsing(Closure $callback)
@@ -151,7 +151,7 @@ class MasterSupervisor implements Pausable, Restartable, Terminable
     /**
      * Terminate this master supervisor and all of its supervisors.
      *
-     * @param  int  $status
+     * @param int $status
      * @return void
      */
     public function terminate($status = 0)
@@ -170,7 +170,7 @@ class MasterSupervisor implements Pausable, Restartable, Terminable
         // another master supervisor could get started in its place without waiting
         // for it to really finish terminating all of its underlying supervisors.
         app(MasterSupervisorRepository::class)
-                    ->forget($this->name);
+            ->forget($this->name);
 
         $startedTerminating = CarbonImmutable::now();
 
@@ -179,7 +179,7 @@ class MasterSupervisor implements Pausable, Restartable, Terminable
         // process does not get stuck in an infinite loop here waiting for these.
         while (count($this->supervisors->filter->isRunning())) {
             if (CarbonImmutable::now()->subSeconds($longest)
-                        ->gte($startedTerminating)) {
+                ->gte($startedTerminating)) {
                 break;
             }
 
@@ -311,24 +311,24 @@ class MasterSupervisor implements Pausable, Restartable, Terminable
      */
     public static function commandQueue()
     {
-        return 'master:'.static::name();
+        return 'master:' . static::name();
     }
 
     /**
      * Get the name of the command queue for the given master supervisor.
      *
-     * @param  string|null  $name
+     * @param string|null $name
      * @return string
      */
     public static function commandQueueFor($name = null)
     {
-        return $name ? 'master:'.$name : static::commandQueue();
+        return $name ? 'master:' . $name : static::commandQueue();
     }
 
     /**
      * Set the output handler.
      *
-     * @param  \Closure  $callback
+     * @param \Closure $callback
      * @return $this
      */
     public function handleOutputUsing(Closure $callback)
@@ -341,8 +341,8 @@ class MasterSupervisor implements Pausable, Restartable, Terminable
     /**
      * Handle the given output.
      *
-     * @param  string  $type
-     * @param  string  $line
+     * @param string $type
+     * @param string $line
      * @return void
      */
     public function output($type, $line)
@@ -353,7 +353,7 @@ class MasterSupervisor implements Pausable, Restartable, Terminable
     /**
      * Shutdown the supervisor.
      *
-     * @param  int  $status
+     * @param int $status
      * @return void
      */
     protected function exit($status = 0)
@@ -364,11 +364,11 @@ class MasterSupervisor implements Pausable, Restartable, Terminable
     /**
      * Exit the PHP process.
      *
-     * @param  int  $status
+     * @param int $status
      * @return void
      */
     protected function exitProcess($status = 0)
     {
-        exit((int) $status);
+        exit((int)$status);
     }
 }
